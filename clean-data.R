@@ -15,3 +15,4 @@ mrpanalysis <- MRPdata_merge %>%
 
 # need to grab NIVEL_ED from parents (CHO3 1 and 2 ) to children,
 # if CHO3 == 1 o 2 copy NIVEL_ED to children in household
+# what about the percentiles
