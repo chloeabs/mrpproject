@@ -11,7 +11,7 @@ mrpanalysis <- MRPdata_merge %>%
   select(CODUSU, REGION, CH03, CH05, NIVEL_ED) %>% 
   rename(hh_id = CODUSU, region=REGION, family_relation = CH03, dob = CH05, edu_attain = NIVEL_ED) %>% 
   tibble::rowid_to_column("id")
-
+save(mrpanalysis, file="mrpanalysis.RData")
 head(mrpanalysis)
 
 #marp
@@ -26,6 +26,8 @@ mom_mrp <- mrpanalysis %>%
 
 
 mrp_fam_merge <- mrpanalysis %>%  left_join(dad_mrp) %>% left_join(mom_mrp) 
+
+save(mrp_fam_merge, file="mrp_fam_merge.Rdata")
 
 head(mrp_fam_merge)
 
