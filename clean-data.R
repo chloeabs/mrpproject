@@ -2,10 +2,7 @@
 library(readr)
 library(dplyr)
 library(readxl)
-
-#read data in
-MRPdata <- read_xls('raw_data/EPH_usu_2_Trim_2017_xls/2017.2.copy.xls')
-MRPdata_b <- read_xls('raw_data/EPH_usu_3_Trim_2017_xls/2017.3.copy.xls')
+library(tidyr)
 
 #merge them together
 # read data in
@@ -27,14 +24,14 @@ mrpanalysis <- MRPdata_merge %>%
         lgmetrofaminclevel = GDECIFR, smmetrofaminclevel = PDECIFR,
         metrofaminclevel = ADECIFR, percaptotfaminclevel = DECCFR,
         regpercapfaminclevel = RDECCFR, lgmetropercapfaminlevel = GDECCFR, 
-        smmetropercapfaminclevel = PDECCFR, metropercapfaminclevel = ADECCFR) %>% 
-  filter(age >= 18 & age <= 23)
+        smmetropercapfaminclevel = PDECCFR, metropercapfaminclevel = ADECCFR) 
 View(mrpanalysis)
+glimpse(mrpanalysis)
 
-load("/Users/chloebergsma-safar/Downloads/mrpanalysis (1).RData")
+#load("/Users/chloebergsma-safar/Downloads/mrpanalysis (1).RData")
 
 #we can save the dataframe in an R native data format
-save(mrpanalysis, file="mrpanalysis.RData")
+#save(mrpanalysis, file="mrpanalysis.RData")
 
 #the below would load a dataframe you saved with save()
 #the idea here is you'll want to read, clean, prep the data, save() it, then you can load it when
@@ -45,9 +42,9 @@ save(mrpanalysis, file="mrpanalysis.RData")
 #then groups the data by household and fills out those mom_edu & dad_edu vars by household
 # so each household will have a mom and dad education level with those values
 mrpan_mom_dad <- mrpanalysis %>% 
-  mutate(dad_edu = ifelse(family_relation == 1, edu_attain, NA),
-         mom_edu = ifelse(family_relation == 2, edu_attain, NA)) %>% 
-  group_by(hh_id) %>% 
+  mutate(dad_edu = ifelse(famrelation == 1, edlevelachieve, NA),
+         mom_edu = ifelse(famrelation == 2, edlevelachieve, NA)) %>% 
+  group_by(hhid) %>% 
   fill(dad_edu, mom_edu) %>% 
   fill(dad_edu, mom_edu, .direction = "up")
 
